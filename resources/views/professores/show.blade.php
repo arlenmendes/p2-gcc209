@@ -10,7 +10,10 @@
                         <p>Professor: {{ $professorDados->Nome }}</p>
                         <p>Instituição: {{ $professorDados->Instituicao }}</p>
                         <p>Email: {{ $professorDados->Email }}</p>
-                        <p>Página: {{ $professorDados->Pagina }}</p>
+                        <p>Página: <a href="{{ $professorDados->Pagina }}">Seguir para página -></a></p>
+                    </div>
+                    <div class="card-footer">
+                        <a  class="btn btn">Voltar</a>
                     </div>
                 </div>
             </div>
