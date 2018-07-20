@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource('professores', 'ProfessorController');
+Route::resource('instituicoes', 'InstituicaoController');
+Route::resource('alunos', 'AlunoController');
+Route::resource('orientacoes', 'OrientacaoController');

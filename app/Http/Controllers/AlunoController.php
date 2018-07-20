@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Aluno;
+use App\Curso;
 use App\Professor;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,21 @@ class AlunoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        return "ok";
-//        print "dasds";
-//        return json_encode(Professor::all());
+
+        $alunos = Aluno::all();
+
+        foreach ($alunos as $aluno) {
+            $aluno->Curso = Curso::where('Codigo', $aluno->Curso)->first()->Nome;
+        }
+
+        return json_encode($alunos);
+    }
+
+    public function show($matricula) {
+        $aluno = Aluno::where('Matricula', $matricula)->first();
+        $aluno->Curso = Curso::where('Codigo', $aluno->Curso)->first()->Nome;
+
+        return view('alunos.show', compact(['aluno']));
     }
 
     /**
@@ -25,7 +38,10 @@ class AlunoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        //
+
+        $cursos = Curso::all();
+
+        return view('alunos.create', compact('cursos'));
     }
 
     /**
@@ -35,20 +51,10 @@ class AlunoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        Aluno::create($request->all());
 
+        return redirect()->route('home');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Aluno  $aluno
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Aluno $aluno)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *

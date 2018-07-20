@@ -12,11 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/professores/{id}', 'ProfessorController@show');
+    Route::get('/instituicoes/{Sigla}', 'InstituicaoController@show');
+    Route::get('/alunos/{matricula}', 'AlunoController@show');
+    Route::get('/orientacoes', function () {
+        return view('orientacoes.listagem');
+    })->name('orientacoes.listagem');
+    Route::get('/orientacoes/{id}', 'OrientacaoController@show');
 
-Route::get('/professores/{id}', 'ProfessorController@show');
+});

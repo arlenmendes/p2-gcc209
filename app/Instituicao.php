@@ -4,13 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Aluno extends Model
+class Instituicao extends Model
 {
     protected $fillable = [
-        'Matricula', 'Nome', 'Cidade', 'UF', 'CRA', 'Curso'
+        'Sigla', 'Nome', 'Cidade', 'UF', 'Pais'
     ];
-
-    protected $table = 'ALUNO';
+    protected $table = 'INSTITUICAO';
 
     public $timestamps = false;
 }

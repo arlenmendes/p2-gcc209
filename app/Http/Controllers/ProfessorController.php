@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
+use App\Instituicao;
+use App\Pesquisa;
 use App\Professor;
 use Illuminate\Http\Request;
 
@@ -24,7 +27,8 @@ class ProfessorController extends Controller
      */
     public function create()
     {
-        //
+        $instituicoes = Instituicao::all();
+        return view('professores.create', compact(['instituicoes']));
     }
 
     /**
@@ -35,7 +39,9 @@ class ProfessorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Professor::create($request->all());
+
+        return redirect()->route('home');
     }
 
     /**
@@ -44,10 +50,16 @@ class ProfessorController extends Controller
      * @param  \App\Professor  $professor
      * @return \Illuminate\Http\Response
      */
-    public function show(Professor $professor, int $ID)
+    public function show(int $ID)
     {
-        $professorDados = Professor::find($ID);
-        return view('professores.show', compact(['professorDados']));
+        $professor = Professor::find($ID);
+        $pesquisas = Pesquisa::where('Professor', $ID)->get();
+
+        foreach ($pesquisas as $pesquisa) {
+            $pesquisa->Area = Area::where('ID', $pesquisa->Area)->first()->Nome;
+        }
+
+        return view('professores.show', compact(['professor', 'pesquisas']));
     }
 
     /**
@@ -56,9 +68,11 @@ class ProfessorController extends Controller
      * @param  \App\Professor  $professor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Professor $professor)
+    public function edit($id)
     {
-        //
+        $professor = Professor::find($id);
+        $instituicoes = Instituicao::all();
+        return view('professores.create', compact(['instituicoes', 'professor']));
     }
 
     /**
@@ -68,9 +82,16 @@ class ProfessorController extends Controller
      * @param  \App\Professor  $professor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Professor $professor)
+    public function update(Request $request, $id)
     {
-        //
+
+        $dados = $request->all();
+        $professor = Professor::find($id)->update($dados);
+//        echo "<pre>";
+//        print_r($professor);
+//        exit();
+
+        return redirect()->route('home');
     }
 
     /**
